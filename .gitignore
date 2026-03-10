@@ -1,0 +1,25 @@
+# Ignore datasets
+data/
+
+# Ignore compressed dataset files
+*.tar.gz
+*.zip
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# MacOS system files
+.DS_Store
+
+# Virtual environments
+venv/
+.env/
+
+# Jupyter checkpoints
+.ipynb_checkpoints/
+
+# Logs
+*.log
