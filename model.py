@@ -66,7 +66,7 @@ class MAEEncoder(nn.Module):
         pos = torch.gather(
             self.pos_embed.repeat(x.shape[0], 1, 1),
             dim=1,
-            index=ids_keep.unsqueeze(-1).expand(1, 1, x.shape[2])
+            index=ids_keep.unsqueeze(-1).repeat(1, 1, x.shape[2])
         )
 
         x = x + pos
@@ -80,7 +80,7 @@ class MAEEncoder(nn.Module):
     
 
 class MAEDecoder(nn.Module):
-    def __init__(self, num_patches, patch_dim=48, embed_dim=192, decoder_embed_dim=128, depth=6, num_heads=3):
+    def __init__(self, num_patches, patch_dim=48, embed_dim=192, decoder_embed_dim=128, depth=6, num_heads=4):
         super().__init__()
 
         self.decoder_embed = nn.Linear(embed_dim, decoder_embed_dim) # encoder output projection to decoder dim

@@ -55,7 +55,7 @@ def random_masking(patches, mask_ratio=0.75):
     ids_restore = torch.argsort(ids_shuffle, dim=1)
     mask = torch.gather(mask, dim=1, index=ids_restore)
 
-    return visible_patches, mask, ids_restore
+    return visible_patches, mask, ids_keep, ids_restore
 
 
 def patchify(images, patch_size=PATCH_SIZE):
