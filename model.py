@@ -12,7 +12,7 @@ class MLP(nn.Module):
             nn.GELU(),
             nn.Linear(hidden_dim, embed_dim)
         )
-
+    
     def forward(self, x):
         return self.net(x)
     
@@ -28,7 +28,7 @@ class Attention(nn.Module):
         )
 
     def forward(self, x):
-        out, _ = self.attn(x)
+        out, _ = self.attn(x, x, x)
         return out
 
 
@@ -66,7 +66,7 @@ class MAEEncoder(nn.Module):
         pos = torch.gather(
             self.pos_embed.repeat(x.shape[0], 1, 1),
             dim=1,
-            index=ids_keep.unsqueeze(-1).repeat(1, 1, x.shape[2])
+            index=ids_keep.unsqueeze(-1).expand(1, 1, x.shape[2])
         )
 
         x = x + pos
@@ -131,7 +131,7 @@ class MAE(nn.Module):
             patch_dim=patch_dim
         )
 
-    def forward(self, patches, visible_patches, ids_keep, ids_restore):
+    def forward(self, visible_patches, ids_keep, ids_restore):
         latent = self.encoder(visible_patches, ids_keep)
         pred = self.decoder(latent, ids_restore)
 
