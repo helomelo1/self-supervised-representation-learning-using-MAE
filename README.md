@@ -1,4 +1,4 @@
-# Masked Autoencoder (MAE) for Representation Learning
+# Masked Autoencoder (MAE) for SSL
 
 A PyTorch implementation of [Masked Autoencoders Are Scalable Vision Learners](https://arxiv.org/abs/2111.06377) for self-supervised representation learning on CIFAR-10.
 
