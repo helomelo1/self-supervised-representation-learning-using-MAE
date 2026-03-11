@@ -7,14 +7,18 @@ from data import get_dataloaders, patchify, random_masking
 from model import MAE
 
 # Hyperparameters
-DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
+DEVICE = (
+    "cuda" if torch.cuda.is_available()
+    else "mps" if torch.backends.mps.is_available()
+    else "cpu"
+)
 
 PATCH_SIZE = 4
 PATCH_DIM = PATCH_SIZE * PATCH_SIZE * 3
 NUM_PATCHES = (32 // PATCH_SIZE) ** 2
 
 BATCH_SIZE = 128
-EPOCHS = 50
+EPOCHS = 150
 LR = 1e-4
 
 # Data
@@ -74,4 +78,4 @@ for epoch in range(EPOCHS):
     print(f"Epoch {epoch+1}/{EPOCHS} | Avg Loss: {avg_loss:.4f}")
 
 # Save model
-torch.save(model.state_dict(), "mae_cifar10.pth")
+torch.save(model.state_dict(), "mae_cifar10_150ep.pth")
