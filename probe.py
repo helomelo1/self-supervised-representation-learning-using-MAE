@@ -7,7 +7,11 @@ from data import get_dataloaders, patchify, random_masking
 from model import MAE
 
 # Hyperparameters
-DEVICE = "mps" if torch.backends.mps.is_available() else "cpu"
+DEVICE = (
+    "cuda" if torch.cuda.is_available()
+    else "mps" if torch.backends.mps.is_available()
+    else "cpu"
+)
 
 PATCH_SIZE = 4
 PATCH_DIM = PATCH_SIZE * PATCH_SIZE * 3
@@ -16,15 +20,15 @@ NUM_PATCHES = (32 // PATCH_SIZE) ** 2
 EMBED_DIM = 192
 
 BATCH_SIZE = 128
-EPOCHS = 50
-LR = 3e-4
+EPOCHS = 100
+LR = 1e-3
 
 # Data
 train_loader, test_loader = get_dataloaders(batch_size=BATCH_SIZE)
 
 # Model
 mae = MAE(patch_dim=PATCH_DIM, num_patches=NUM_PATCHES).to(DEVICE)
-mae.load_state_dict(torch.load("mae_cifar10.pth", map_location=DEVICE))
+mae.load_state_dict(torch.load("weights/mae_cifar10_150ep.pth", map_location=DEVICE))
 
 encoder = mae.encoder
 
@@ -49,15 +53,14 @@ for epoch in range(EPOCHS):
         images = images.to(DEVICE)
         labels = labels.to(DEVICE)
 
-        patches = patchify(images)
+        patches = patchify(images).to(DEVICE)
 
-        visible_patches, mask, ids_keep, ids_restore = random_masking(patches)
+        B = patches.shape[0]
 
-        visible_patches = visible_patches.to(DEVICE)
-        ids_keep = ids_keep.to(DEVICE)
+        ids_keep = torch.arange(NUM_PATCHES).unsqueeze(0).repeat(B, 1).to(DEVICE)
 
         with torch.no_grad():
-            features = encoder(visible_patches, ids_keep)
+            features = encoder(patches, ids_keep)
 
         # global avg. pooling
         features = features.mean(dim=1)
@@ -87,15 +90,13 @@ with torch.no_grad():
 
         images = images.to(DEVICE)
         labels = labels.to(DEVICE)
+        patches = patchify(images).to(DEVICE)
 
-        patches = patchify(images)
+        B = patches.shape[0]
 
-        visible_patches, mask, ids_keep, ids_restore = random_masking(patches)
+        ids_keep = torch.arange(NUM_PATCHES).unsqueeze(0).repeat(B, 1).to(DEVICE)
 
-        visible_patches = visible_patches.to(DEVICE)
-        ids_keep = ids_keep.to(DEVICE)
-
-        features = encoder(visible_patches, ids_keep)
+        features = encoder(patches, ids_keep)
         features = features.mean(dim=1)
 
         logits = classifier(features)
