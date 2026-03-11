@@ -23,8 +23,9 @@ Implemented a **Masked Autoencoder** from scratch in PyTorch based on [He et al.
 
 | Evaluation Method | Accuracy |
 |-------------------|----------|
-| **Linear Probing** | 61.25% |
-| **k-NN Classification** | 50.4% |
+| **Linear Probing (MAE features)** | 61.25% |
+| **k-NN Classification (MAE features)** | 50.4% |
+| Raw Pixels (baseline) | 34.63% |
 
 ## Learned Representations (t-SNE)
 
