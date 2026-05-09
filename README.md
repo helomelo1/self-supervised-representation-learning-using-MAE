@@ -1,12 +1,3 @@
----
-title: MAE CIFAR-10 Demo
-emoji: 🎭
-colorFrom: indigo
-colorTo: purple
-sdk: docker
-app_port: 7860
----
-
 # Self-Supervised Learning with Masked Autoencoders (MAE)
 
 Implemented a **Masked Autoencoder** from scratch in PyTorch based on [He et al., 2021](https://arxiv.org/abs/2111.06377), demonstrating self-supervised visual representation learning on CIFAR-10 — deployed as a **live inference API**.
