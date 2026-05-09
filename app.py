@@ -4,7 +4,7 @@ import torch
 import torch.nn as nn
 from PIL import Image
 from fastapi import FastAPI, UploadFile, File
-from fastapi.responses import JSONResponse
+from fastapi.responses import JSONResponse, RedirectResponse
 import torchvision.transforms as transforms
 
 from model import MAE
@@ -84,6 +84,11 @@ app = FastAPI(
                 "Upload an image to classify, reconstruct, or extract features.",
     version="1.0.0",
 )
+
+
+@app.get("/")
+def root():
+    return RedirectResponse(url="/docs")
 
 
 @app.get("/health")
