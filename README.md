@@ -11,7 +11,7 @@ app_port: 7860
 
 Implemented a **Masked Autoencoder** from scratch in PyTorch based on [He et al., 2021](https://arxiv.org/abs/2111.06377), demonstrating self-supervised visual representation learning on CIFAR-10 — deployed as a **live inference API**.
 
-> **🚀 [Try the Live Demo →](https://shrihari8-mae-cifar10.hf.space/docs)**
+> **[Try the Live Demo →](https://shrihari8-mae-cifar10.hf.space/docs)**
 
 ## Key Highlights
 
